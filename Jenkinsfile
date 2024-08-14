@@ -6,7 +6,7 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                git url: 'https://github.com/gitbucket/gitbucket.git', branch: 'master'
+                git url: 'https://github.com/OleksandraKotovska/gitbucket1.git', branch: 'master'
             }
         }
 
