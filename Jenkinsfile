@@ -1,16 +1,12 @@
 pipeline {
-    agent any
+    agent {
+        label 'ssh-node'
+    }
 
     stages {
         stage('Clone Repository') {
             steps {
                 git url: 'https://github.com/gitbucket/gitbucket.git', branch: 'master'
-            }
-        }
-        
-        stage('Run tests') {
-            steps {
-                sh 'sbt "testOnly * -- -l ExternalDBTest"'
             }
         }
 
@@ -22,5 +18,12 @@ pipeline {
                 }
             }
         }
+        
+        stage('Run tests') {
+            steps {
+                sh 'sbt "testOnly * -- -l ExternalDBTest"'
+            }
+        }
+        
     }
 }
