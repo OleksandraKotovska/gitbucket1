@@ -2,9 +2,11 @@ pipeline {
     agent {
         label 'agent1'
     }
-    stage('Hello') {
+    stages {
+        stage('Hello') {
             steps {
                 echo 'Hello World'
             }
         }
+    }
 }
