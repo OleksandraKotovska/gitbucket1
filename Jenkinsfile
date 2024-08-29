@@ -2,23 +2,13 @@ pipeline {
     agent {
         label 'agent1'
     }
-
     stages {
         stage('Checkout') {
             steps {
-                script {
-                    if (env.CHANGE_ID) {
-                        echo "Building Pull Request: ${env.CHANGE_ID}"
-                        checkout scm
-                    } else {
-                        echo "Skipping build because this is not a Pull Request."
-                        currentBuild.result = 'SUCCESS'
-                        return
-                    }
-                }
+                checkout scm
             }
         }
-
+        
         stage('Build') {
             steps {
                 script {
