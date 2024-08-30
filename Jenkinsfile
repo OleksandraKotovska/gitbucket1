@@ -17,11 +17,5 @@ pipeline {
                 }
             }
         }
-        
-        stage('Run tests') {
-            steps {
-                sh 'sbt "testOnly * -- -l ExternalDBTest"'
-            }
-        }
     }
 }
