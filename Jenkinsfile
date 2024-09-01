@@ -26,8 +26,7 @@ pipeline {
             steps {
                 script {
                     dir('/home/jenkins/workspace/gitbucket-pipeline_develop') {
-                        sh 'ls -la'
-                        docker.build("${IMAGE_NAME}:${env.BUILD_ID}", ".")
+                        docker.build("${IMAGE_NAME}", ".")
                     }
                 }
             }
