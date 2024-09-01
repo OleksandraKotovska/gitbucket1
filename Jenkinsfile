@@ -2,6 +2,9 @@ pipeline {
     agent {
         label 'agent'
     }
+    environment {
+        IMAGE_NAME = 'devops-gitbucket-project'
+    }
     stages {
         stage('Checkout') {
             steps {
@@ -12,10 +15,17 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    sh 'sbt sbtVersion'
                     sh 'sbt package'
                 }
             }
         }
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    docker.build("${IMAGE_NAME}:${env.BUILD_ID}")
+                }
+            }
+        }
+
     }
 }
