@@ -23,10 +23,11 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    docker.build("${IMAGE_NAME}:${env.BUILD_ID}")
+                    dir('/home/jenkins/workspace/gitbucket-pipeline_develop') {  
+                        docker.build("${IMAGE_NAME}:${env.BUILD_ID}")
+                    }
                 }
             }
-        }
 
     }
 }
