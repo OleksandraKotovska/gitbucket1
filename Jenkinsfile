@@ -15,6 +15,16 @@ pipeline {
         stage('Build') {
             steps {
                 script {
+                    sh 'sbt package'
+                    
+                    sh 'sbt executable'
+                    
+                }
+            }
+        }
+        stage('Build') {
+            steps {
+                script {
                     // Check if the image exists
                     def imageExists = sh(script: "docker images -q ${IMAGE_NAME}", returnStdout: true).trim()
 
@@ -34,5 +44,6 @@ pipeline {
                 }
             }
         }
+        
     }
 }
