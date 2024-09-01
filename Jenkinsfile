@@ -20,14 +20,15 @@ pipeline {
                 }
             }
         }
+        
         stage('Build Docker Image') {
             steps {
                 script {
-                    dir('/home/jenkins/workspace/gitbucket-pipeline_develop') {  
+                    dir('/home/jenkins/workspace/gitbucket-pipeline_develop') {
                         docker.build("${IMAGE_NAME}:${env.BUILD_ID}")
                     }
                 }
             }
-
+        }
     }
 }
