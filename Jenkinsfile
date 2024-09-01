@@ -16,6 +16,7 @@ pipeline {
             steps {
                 script {
                     sh 'sbt package'
+                    sh 'ls -la /home/jenkins/workspace/gitbucket-pipeline_develop/target/scala-2.13/'
                 }
             }
         }
