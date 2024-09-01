@@ -22,7 +22,7 @@ pipeline {
                 }
             }
         }
-        stage('Build') {
+        stage('Build Docker Image') {
             steps {
                 script {
                     // Check if the image exists
