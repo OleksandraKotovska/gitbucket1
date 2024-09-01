@@ -1,6 +1,6 @@
 FROM eclipse-temurin:17
 
-COPY target/scala-2.13/gitbucket_2.13-4.41.0.war /opt/gitbucket.war
+COPY target/executable/gitbucket.war /opt/gitbucket.war
 
 RUN ln -s /gitbucket /root/.gitbucket
 
