@@ -15,19 +15,15 @@ pipeline {
         stage('Build') {
             steps {
                 script {
+                    // Run sbt package to build the regular WAR file
                     sh 'sbt package'
-                    sh 'ls -la /home/jenkins/workspace/gitbucket-pipeline_develop/target/scala-2.13/'
-                }
-            }
-        }
-        
-        stage('Build Docker Image') {
-            steps {
-                script {
-                    dir('/home/jenkins/workspace/gitbucket-pipeline_develop') {
-                        sh 'ls -la'
-                        docker.build("${IMAGE_NAME}:${env.BUILD_ID}", ".")
-                    }
+                    
+                    // Run sbt executable to build the executable WAR file
+                    sh 'sbt executable'
+                    
+                    // Verify the generated WAR files
+                    sh 'ls -la target/scala-2.13/'
+                    sh 'ls -la target/executable/'
                 }
             }
         }
