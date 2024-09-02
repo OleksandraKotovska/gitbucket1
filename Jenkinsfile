@@ -3,10 +3,8 @@ pipeline {
         label 'agent'
     }
     environment {
-        IMAGE_NAME = 'devops-gitbucket-project:latest'
+        IMAGE_NAME = 'devops-gitbucket-project'
         DOCKER_HUB_CREDENTIALS = credentials('dockerhub')
-        DOCKER_HUB_USER = "${DOCKER_HUB_CREDENTIALS_USR}"
-        DOCKER_HUB_PASS = "${DOCKER_HUB_CREDENTIALS_PSW}"
     }
     stages {
         stage('Checkout') {
@@ -38,16 +36,11 @@ pipeline {
                 }
             }
         }
-        stage('Login to dockerhub') {
-            steps {
-                withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_HUB_USER', passwordVariable: 'DOCKER_HUB_PASS')]) {
-                    sh 'echo $DOCKER_HUB_PASS | docker login -u $DOCKER_HUB_USER --password-stdin'
-                }
-            }
-        }
         stage('Push image to dockerhub') {
             steps {
-                sh "docker push ${IMAGE_NAME}"
+                withDockerRegistry([credentialsId: "dockerhub", url: ""]) {
+                    sh "docker push ${IMAGE_NAME}"
+                }
             }
         }
     }
