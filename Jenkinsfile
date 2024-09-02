@@ -3,7 +3,7 @@ pipeline {
         label 'agent'
     }
     environment {
-        IMAGE_NAME = 'devops-gitbucket-project:latest'
+        IMAGE_NAME = 'devops-gitbucket-project'
         DOCKER_HUB_CREDENTIALS = credentials('dockerhub')
         DOCKER_HUB_USER = "${DOCKER_HUB_CREDENTIALS_USR}"
         DOCKER_HUB_PASS = "${DOCKER_HUB_CREDENTIALS_PSW}"
@@ -26,26 +26,31 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    def imageExists = sh(script: "docker images -q ${IMAGE_NAME}", returnStdout: true).trim()
+                    def fullImageName = "${DOCKER_HUB_USER}/${IMAGE_NAME}"
+                    
+                    def imageExists = sh(script: "docker images -q ${fullImageName}", returnStdout: true).trim()
                     if (imageExists) {
-                        echo "Docker image ${IMAGE_NAME} exists. Deleting old image..."
-                        sh "docker rmi -f ${IMAGE_NAME}"
+                        echo "Docker image ${fullImageName} exists. Deleting old image..."
+                        sh "docker rmi -f ${fullImageName}"
                     } else {
-                        echo "Docker image ${IMAGE_NAME} does not exist. Creating a new one..."
+                        echo "Docker image ${fullImageName} does not exist. Creating a new one..."
                     }
-                    docker.build("${IMAGE_NAME}", ".")
+                    docker.build(fullImageName, ".")
                     sh 'docker image prune -f'
                 }
             }
         }
-        stage('Login to dockerhub') {
+        stage('Login to Docker Hub') {
             steps {
                 sh 'echo $DOCKER_HUB_PASS | docker login -u $DOCKER_HUB_USER --password-stdin'
             }
         }
-        stage('Push image to dockerhub') {
+        stage('Push image to Docker Hub') {
             steps {
-                sh "docker push ${DOCKER_HUB_USER}/${IMAGE_NAME}"
+                script {
+                    def fullImageName = "${DOCKER_HUB_USER}/${IMAGE_NAME}"
+                    sh "docker push ${fullImageName}"
+                }
             }
         }
     }
