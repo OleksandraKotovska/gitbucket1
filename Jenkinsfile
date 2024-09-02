@@ -9,13 +9,13 @@ pipeline {
         DOCKER_HUB_PASS = "${DOCKER_HUB_CREDENTIALS_PSW}"
     }
     stages {
-        stage('Checkout') {
+        stage('Pull the repo') {
             steps {
                 checkout scm
             }
         }
         
-        stage('Build') {
+        stage('Build war file') {
             steps {
                 script {
                     sh 'sbt package'
