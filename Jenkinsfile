@@ -23,6 +23,11 @@ pipeline {
                 }
             }
         }
+        stage('Run tests') {
+            steps {
+                sh 'sbt "testOnly * -- -l ExternalDBTest"'
+            }
+        }
         stage('Build Docker Image') {
             steps {
                 script {
@@ -51,11 +56,6 @@ pipeline {
                     def fullImageName = "${DOCKER_HUB_USER}/${IMAGE_NAME}"
                     sh "docker push ${fullImageName}"
                 }
-            }
-        }
-        stage('Run tests') {
-            steps {
-                sh 'sbt test'
             }
         }
     }
