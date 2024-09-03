@@ -53,6 +53,11 @@ pipeline {
                 }
             }
         }
+        stage('Run tests') {
+            steps {
+                sh 'sbt test'
+            }
+        }
     }
     post {
         always {
